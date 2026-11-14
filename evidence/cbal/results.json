@@ -1,0 +1,95 @@
+{
+  "repository": "https://github.com/codespermuted/cbal",
+  "commit": "70a8139c163d000824e67c4420b43e14f42b5e3e",
+  "run_at": "2026-11-15T00:27:43.724297+09:00",
+  "python": "3.12.13",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "seed": 42,
+  "data_kind": "synthetic, no personal or business data",
+  "data_sha256": "e49f3251b408a22359f786b5806aca5b57254423891490646a21f9e012a99e05",
+  "series_count": 3,
+  "observations_per_series": 180,
+  "total_rows": 540,
+  "initial_train_days": 152,
+  "validation_days": 14,
+  "untouched_test_days": 14,
+  "model_selection": "single chronological validation window, MAE",
+  "refit": "all base models refitted on first166 days after selection, ensemble weights fixed",
+  "selected_model": "WeightedEnsemble",
+  "ensemble_weights": {
+    "AutoETS": 0.2159090909090909,
+    "AutoTheta": 0.6818181818181818,
+    "SeasonalNaive": 0.10227272727272728
+  },
+  "validation_leaderboard": [
+    {
+      "model": "WeightedEnsemble",
+      "score_val": 2.610090486633427,
+      "fit_time_s": 0.1807568073272705
+    },
+    {
+      "model": "AutoETS",
+      "score_val": 2.6756532787295146,
+      "fit_time_s": 0.1493067741394043
+    },
+    {
+      "model": "AutoTheta",
+      "score_val": 2.7132285415478434,
+      "fit_time_s": 0.039388179779052734
+    },
+    {
+      "model": "SeasonalNaive",
+      "score_val": 3.359938095238096,
+      "fit_time_s": 0.0025551319122314453
+    },
+    {
+      "model": "Average",
+      "score_val": 14.356756328320808,
+      "fit_time_s": 0.002900838851928711
+    },
+    {
+      "model": "Naive",
+      "score_val": 15.650604761904765,
+      "fit_time_s": 0.004611015319824219
+    },
+    {
+      "model": "Drift",
+      "score_val": 16.16456909492274,
+      "fit_time_s": 0.002769947052001953
+    }
+  ],
+  "holdout_mae_by_model": {
+    "Naive": 18.540916666666664,
+    "SeasonalNaive": 4.023949999999999,
+    "AutoETS": 2.5268362985240893,
+    "AutoTheta": 2.5172792800239283,
+    "Average": 14.285387234652912,
+    "Drift": 19.23436753246753,
+    "WeightedEnsemble": 2.5210063180545013
+  },
+  "selected_holdout_mae": 2.5210063180545013,
+  "fit_seconds": 1.4493672500830144,
+  "refit_seconds": 0.1916665000608191,
+  "dependencies": {
+    "cbal": "0.1.0",
+    "numpy": "2.5.4",
+    "pandas": "2.3.3",
+    "scipy": "1.18.1",
+    "statsforecast": "2.1.1",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2"
+  },
+  "limitations": [
+    "Synthetic demonstration, not production performance or a published benchmark.",
+    "Only six CPU baseline/statistical candidates were run; deep and foundation models were not tested.",
+    "One validation and one holdout window; no multi-window generalization claim.",
+    "External harness explicitly refits base models; the source library is unmodified."
+  ],
+  "evidence": {
+    "width": 1800,
+    "height": 1008,
+    "bytes": 82946,
+    "alt": "C-BAL 공개 코드를 CPU에서 실행한 합성 시계열 예측과 검증 MAE 비교. 업무 성능을 의미하지 않는 재현 데모.",
+    "portfolio_media": "../../public/media/cbal-synthetic-forecast.webp"
+  }
+}

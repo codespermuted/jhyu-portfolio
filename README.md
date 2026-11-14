@@ -1,6 +1,6 @@
 # 유재홍 포트폴리오
 
-Astro로 만든 정적 포트폴리오입니다. 소개, 대표 작업, 분야별 프로젝트 목록과 프로젝트 상세 페이지 11개를 제공합니다. 별도 서버나 데이터베이스가 필요하지 않습니다.
+Astro로 만든 정적 포트폴리오입니다. 소개, 대표 작업, 분야별 프로젝트 목록과 프로젝트 상세 페이지 13개를 제공합니다. 별도 서버나 데이터베이스가 필요하지 않습니다.
 
 ## 실행
 
@@ -33,17 +33,28 @@ npm run check:output
 
 `projects.json`의 `shortTitle`은 홈의 짧은 제목, `cardSummary`는 전체 목록의 한 문장 설명입니다. `title`·`summary`는 상세 페이지와 더 자세한 소개에 사용합니다. 목록에는 문제와 접근법을 짧게 쓰고, 평가 조건과 수치의 근거는 상세 설명에 둡니다.
 
-프로젝트 배열에 같은 필드 구조의 객체를 추가하면 상세 페이지와 목록이 생성됩니다. `slug`는 고유해야 합니다. 분야는 `forecasting`, `systems`, `research` 중 하나로 지정합니다. 분야별 필터 개수는 자동으로 계산됩니다. 추가·삭제 시 `scripts/check-output.mjs`의 예상 프로젝트 수(현재 11개)도 맞춥니다. 대표 작업은 `index.astro`의 `selected` 배열에서 고릅니다.
+프로젝트 배열에 같은 필드 구조의 객체를 추가하면 상세 페이지와 목록이 생성됩니다. `slug`는 고유해야 합니다. 분야는 `forecasting`, `systems`, `research` 중 하나로 지정합니다. 분야별 필터 개수는 자동으로 계산됩니다. 빌드 검사는 데이터의 프로젝트 수와 실제 상세 페이지 수를 대조합니다. 대표 작업은 `index.astro`의 `selected` 배열에서 고릅니다.
 
 이미지에는 실제 `width`, `height`와 설명하는 `alt`를 넣습니다. SMP 홈 비교기는 이미지 배열의 첫 3개를 사용하며 두 번째 사례를 먼저 표시합니다. 순서를 바꾸면 `src/components/SmpComparison.astro`의 초기 선택도 확인하세요. 바뀐 미디어는 새 파일명을 쓰면 캐시가 오래된 파일을 보여주는 일을 줄일 수 있습니다.
 
 글꼴은 자체 호스팅한 Instrument Sans와 Noto Sans KR 부분 글꼴입니다. 새로 추가한 한글이 부분 글꼴에 없으면 시스템의 한글 글꼴로 표시됩니다. 외부 글꼴 서버에 연결하지 않습니다. 라이선스는 `public/fonts/OFL-*.txt`에 있습니다.
 
-## 기존 Netlify 주소에 배포
+## GitHub 수정과 자동 배포
 
-기존 사이트 `jhyu-portfolio`의 **Deploys** 화면에 `dist` 폴더를 업로드하면 기존 도메인을 유지할 수 있습니다. 새 사이트를 만들 필요가 없습니다. 함께 제공한 `netlify-deploy.zip`을 풀어 나온 폴더도 같은 결과물입니다.
+소스 저장소는 [codespermuted/jhyu-portfolio](https://github.com/codespermuted/jhyu-portfolio)이며, 기존 [Netlify 주소](https://jhyu-portfolio.netlify.app/)를 사용합니다. 연결 대상은 이 저장소 하나입니다.
 
-Git 저장소를 연결한다면 빌드 명령은 `npm run build`, 배포 폴더는 `dist`입니다. `netlify.toml`에 설정했습니다. 자동 빌드에서는 `netlify.toml`의 캐시·보안 헤더 설정이 적용되고, 수동 업로드에서도 `public/_headers`가 같은 설정을 제공합니다.
+`main` 브랜치에 변경을 push하면 Netlify가 Node.js 24로 의존성을 설치하고 `npm run build && npm run check:output`을 실행한 뒤 `dist/`를 배포합니다. 검사에 실패하면 새 파일이 게시되지 않습니다. 로컬 파일을 저장하는 것만으로는 배포되지 않습니다.
+
+```sh
+git pull --ff-only
+# src/data/projects.json 또는 src/data/profile.json 등 수정
+npm run build && npm run check:output
+git add .
+git commit -m "Update portfolio content"
+git push origin main
+```
+
+간단한 문구 수정은 GitHub에서 파일을 열어 편집 후 `main`에 커밋해도 같은 배포 흐름을 사용합니다. 배포 진행·실패 원인은 [Netlify Deploys](https://app.netlify.com/projects/jhyu-portfolio/deploys)에서 확인합니다. 자동 배포 설정은 `netlify.toml`에 있으며, 수동 복구가 필요하면 검증된 `dist/`를 기존 사이트에 업로드할 수 있습니다.
 
 ## GitHub Pages로 옮기는 경우
 
@@ -54,7 +65,7 @@ SITE_URL=https://codespermuted.github.io BASE_PATH=/repository-name npm run buil
 npm run check:output
 ```
 
-사용자 루트 사이트라면 `BASE_PATH=/`로 지정합니다. 생성된 `dist/`를 GitHub Pages의 배포 대상으로 사용합니다. GitHub Actions 워크플로는 이 폴더에 포함하지 않았습니다. 기존 저장소를 덮어쓰거나 새 저장소를 생성하지 않았습니다.
+사용자 루트 사이트라면 `BASE_PATH=/`로 지정합니다. 생성된 `dist/`를 GitHub Pages의 배포 대상으로 사용합니다. GitHub Pages용 Actions 워크플로는 포함하지 않았습니다. 현재 자동 배포는 Netlify의 Git 연동을 사용합니다.
 
 ## 성능을 개선한 방식
 
@@ -85,3 +96,9 @@ npm run check:output
 Taste의 Chrome 기반 `consistency`·`perf`와 전체 native gate는 실행하지 않았습니다. 사이트 성능과 읽기 흐름을 우선해 전체 키트·강제 화면 높이·WebGL·자동 디자인 추첨은 도입하지 않았습니다. 검사 결과 0개를 전체 디자인·접근성·실측 성능 검증 통과로 해석하지 않습니다.
 
 원본은 사용자가 제공한 공개 Netlify 사이트에서 복원했습니다. 공개된 GitHub 코드와 논문을 함께 확인했으며, 확인이 필요한 내용은 `CONTENT-NOTES.md`에 정리했습니다.
+
+## 연구 구성과 실행 증거
+
+홈은 SMP·Mojo 대표 작업 다음에 CBALLM·이미지 기반 약효 평가·DDI를 **모델링과 검증**으로 묶습니다. 이 섹션의 선택과 설명은 `src/components/ResearchShowcase.astro`에서 수정합니다. DB 조회 기반 RAG 사례는 전체 목록 마지막이며, `TutorArchitecture.astro`가 실제 분기와 한계를 설명합니다.
+
+추가된 C-BAL과 정규화 연구는 공개 코드를 직접 실행해 결과물을 만들었습니다. [C-BAL 재현 방법](evidence/cbal/README.md)과 [정규화 연구 재현 방법](evidence/norm-boundary/README.md)에 고정 커밋·환경·명령·결과를 보존했습니다. 합성데이터 실험과 기존 CSV 재집계를 구분하며, 이 기록을 실제 업무 성능이나 신규 실데이터 학습으로 표현하지 않습니다. 재현 작업은 웹 빌드와 별개여서 Netlify에서는 실행하지 않습니다.

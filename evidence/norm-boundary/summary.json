@@ -1,0 +1,99 @@
+{
+  "repository": "https://github.com/codespermuted/norm-boundary-ccai",
+  "commit": "33420b5a57bf720c09485a8cd5ee521954dc07e5",
+  "verified_at_utc": "2026-11-14T15:27:49.252628+00:00",
+  "status": "Anonymous workshop submission as described in the public README; acceptance and individual contribution not independently verified.",
+  "runtime": {
+    "python": "3.12.13",
+    "packages": {
+      "numpy": "2.5.4",
+      "pandas": "3.1.1",
+      "matplotlib": "3.11.2",
+      "pytest": "9.2.0"
+    },
+    "threads": 1
+  },
+  "checks": [
+    {
+      "command": "python -m experiments.verify_paper_numbers",
+      "exit_code": 0,
+      "kind": "frozen-result arithmetic reanalysis",
+      "passed": 82,
+      "total": 82
+    },
+    {
+      "command": "python -m experiments.g7_prop1_verify",
+      "exit_code": 0,
+      "kind": "fresh synthetic Monte Carlo",
+      "draws_per_case": 2000000
+    },
+    {
+      "command": "python -m pytest tests/test_theory.py -q",
+      "exit_code": 0,
+      "kind": "upstream theory tests",
+      "passed": 14
+    }
+  ],
+  "frozen_reanalysis": {
+    "kind": "existing frozen experimental results, reaggregated now; no retraining",
+    "source": "results/g11_footing.csv",
+    "sha256": "87cd3dbb6ae4edbaeba3ea798e4fb9d55c6ef63cfd3df790d6fb2311197293b1",
+    "backbone": "linmix",
+    "seeds_per_arm_cell": 5,
+    "cells": 6,
+    "metric": "RevIN minus RAW test MSE, global-z units",
+    "bootstrap": {
+      "samples": 100000,
+      "seed": 0,
+      "method": "repository experiments.g11_table.boot; percentile 95% cell bootstrap"
+    },
+    "equal_cell_means_and_95pct_ci": {
+      "global": {
+        "mean": 0.02567233333333334,
+        "lower": 0.0016116999999999937,
+        "upper": 0.05176993333333335
+      },
+      "window_floor": {
+        "mean": -0.07480986666666668,
+        "lower": -0.11846940000000006,
+        "upper": -0.03729720000000002
+      },
+      "scale": {
+        "mean": -0.030290033333333324,
+        "lower": -0.05040513333333333,
+        "upper": -0.01186909999999998
+      }
+    }
+  },
+  "new_synthetic": {
+    "kind": "newly generated synthetic data, upstream code executed unchanged",
+    "n_per_cell": 2000000,
+    "seed": 0,
+    "gaussian_checks_passed": 21,
+    "gaussian_checks_total": 21,
+    "tolerance": "abs(got-want) <= 0.02 * max(abs(want), 0.001)",
+    "max_relative_error_nonzero_gaussian": 0.004291454454858763
+  },
+  "portfolio_artifacts": [
+    {
+      "src": "/media/norm-boundary-footing-reproduction.svg",
+      "width": 1280,
+      "height": 860,
+      "sha256": "75565a45c070abb3395f58c540b0f48a26223f9355abcc4fa5b0a31b7c26eee9",
+      "bytes": 122072
+    },
+    {
+      "src": "/media/norm-boundary-theory-reproduction.svg",
+      "width": 1280,
+      "height": 760,
+      "sha256": "00cd4bae0c0d999c04175f72cb93224c71c6ee2c2dcfd1680aad74dbec471648",
+      "bytes": 114835
+    }
+  ],
+  "limits": [
+    "No real-data forecasting models were retrained. Original KMA/GEFCom data and the full forecasting grid were not rerun.",
+    "82/82 checks establish consistency with frozen CSVs and the saved table, not independent validation of the original training runs.",
+    "Synthetic experiments validate the stated model under its assumptions, not real-world forecast performance.",
+    "The result is not a universal advantage or disadvantage for normalization; covariate scaling changes the sign in the audited cells."
+  ]
+}

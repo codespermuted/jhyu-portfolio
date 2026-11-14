@@ -154,6 +154,57 @@
     "cardSummary": "개별 사용 이력이 없는 환경에서 기상·달력 정보로 전력 수요를 예측합니다."
   },
   {
+    "slug": "cbal",
+    "title": "시계열 모델의 출발점을 만드는 C-BAL",
+    "englishTitle": "C-BAL · Compute BAseLine",
+    "category": "forecasting",
+    "categoryLabel": "시계열 AutoML",
+    "summary": "모델마다 다른 학습·예측·평가 절차를 하나의 인터페이스로 묶었습니다. 여러 기준 모델을 같은 조건에서 비교하고, 검증 결과에 따라 앙상블을 선택하는 시계열 AutoML 패키지입니다.",
+    "tools": [
+      "Python",
+      "Pandas",
+      "StatsForecast",
+      "Greedy ensemble"
+    ],
+    "outcome": "후보 비교부터 앙상블 선택·예측까지 하나의 흐름으로",
+    "problem": "새 시계열 데이터를 만날 때마다 모델별 입력 형식과 평가 코드를 다시 작성하면, 도메인 분석과 모델 개선에 쓸 시간이 줄어듭니다. 복잡한 모델을 시도하기 전에 믿고 비교할 수 있는 기준선을 만드는 과정을 정리했습니다.",
+    "approach": [
+      "TimeSeriesDataFrame과 TimeSeriesPredictor를 중심으로 다중 시계열의 데이터 형식, 학습, 예측, 평가 인터페이스를 통일했습니다.",
+      "Naive·계절 기준 모델과 StatsForecast의 통계 모델을 같은 평가 흐름에 연결하고, 후보별 검증 점수를 리더보드로 제공합니다.",
+      "검증 예측을 이용한 greedy ensemble selection으로 모델 조합과 가중치를 정합니다. AutoGluon의 설계와 기존 앙상블 선택 연구를 참고한 구현입니다.",
+      "모델 레지스트리와 프리셋으로 후보를 확장하고, 전처리·다중 검증 창·확률 예측·서빙을 연결할 수 있도록 패키지를 구성했습니다."
+    ],
+    "evaluation": "공개 코드 커밋 70a8139을 CPU에서 직접 실행했습니다. seed 42로 만든 합성 시계열 3개(각 180일)를 학습 152일, 검증 14일, 테스트 14일로 나눴습니다. 후보 6개를 비교한 뒤 검증에서 선택된 앙상블의 MAE는 2.61, 선택에 쓰지 않은 테스트 구간의 MAE는 2.52였습니다. 이 수치는 재현 절차를 보여주는 합성데이터 데모이며 실제 업무의 성능을 나타내지 않습니다.",
+    "detail": "검증이 끝난 뒤 기저 모델을 학습·검증 구간 전체에 다시 적합하고 앙상블 가중치는 고정해, 마지막 14일을 평가했습니다. 이 데모에서는 AutoTheta 단독의 테스트 MAE가 앙상블보다 근소하게 낮았습니다. 검증에서 선택된 모델이 새로운 구간에서도 항상 최선인 것은 아니라는 점까지 함께 확인할 수 있습니다.",
+    "links": [
+      {
+        "label": "GitHub에서 소스 보기",
+        "url": "https://github.com/codespermuted/cbal"
+      },
+      {
+        "label": "재현한 커밋 보기",
+        "url": "https://github.com/codespermuted/cbal/tree/70a8139c163d000824e67c4420b43e14f42b5e3e"
+      },
+      {
+        "label": "이번 실행의 재현 방법과 결과",
+        "url": "https://github.com/codespermuted/jhyu-portfolio/tree/main/evidence/cbal"
+      }
+    ],
+    "images": [
+      {
+        "src": "/media/cbal-synthetic-forecast.webp",
+        "width": 1800,
+        "height": 1008,
+        "alt": "C-BAL 공개 코드를 CPU에서 실행한 합성 시계열 예측과 검증 MAE 비교. 업무 성능을 의미하지 않는 재현 데모.",
+        "label": "공개 코드 실행 결과 · 합성데이터 CPU 데모"
+      }
+    ],
+    "videos": [],
+    "featured": false,
+    "shortTitle": "C-BAL · 시계열 기준 모델 자동화",
+    "cardSummary": "후보 모델 비교와 앙상블 선택을 하나의 시계열 학습·평가 흐름으로 묶었습니다."
+  },
+  {
     "slug": "mojo",
     "title": "코딩 세션의 노하우를 남기는 Mojo",
     "englishTitle": "Mojo · Scoped Knowledge Reference",
@@ -195,44 +246,6 @@
     "featured": true,
     "shortTitle": "Mojo · 코딩 지식 관리",
     "cardSummary": "Claude·Codex 작업 기록에서 다음 작업에 쓸 지식을 추출하고 정리합니다."
-  },
-  {
-    "slug": "tutor",
-    "title": "확인된 수업 정보만 답하는 카카오톡 튜터봇",
-    "englishTitle": "KakaoTalk Tutor Bot",
-    "category": "systems",
-    "categoryLabel": "LLM 서비스",
-    "summary": "학부모에게 과외 정보를 전달하고, 데이터베이스에서 확인되는 사실만 답하는 봇입니다. 답을 확인할 수 없거나 제한 시간에 걸리면 선생님 확인으로 연결합니다.",
-    "tools": [
-      "FastAPI",
-      "SQLite",
-      "Claude Haiku",
-      "Kakao i Open Builder",
-      "Railway"
-    ],
-    "outcome": "5초 응답 제한을 고려한 운영 구조 · 월 약 5천원",
-    "problem": "학부모에게 정확한 수업 정보를 전달하면서 카카오톡의 5초 응답 제한도 지켜야 했습니다. 확인되지 않은 정보를 생성하거나 응답을 끝없이 기다리게 하지 않는 것이 핵심이었습니다.",
-    "approach": [
-      "답변의 근거를 DB context로 제한하고, 3문장 응답과 금지 조언 차단 규칙을 두었습니다.",
-      "Haiku 호출에 4초 asyncio 제한을 두고, 시간 초과나 확인할 수 없는 질문에는 선생님 확인을 안내하는 fallback을 구성했습니다.",
-      "세션 상태는 LLM 대신 SQLite에서 관리하고, 인증코드로 학부모와 학생을 N:N 관계로 연결했습니다."
-    ],
-    "evaluation": "Railway에 상시 배포해 운영했으며, 운영 당시 비용은 월 약 5천원입니다. 응답 제한에 맞춘 정상 처리와 시간 초과 경로를 나누고, 확인되지 않은 질문은 선생님 확인으로 연결하도록 구성했습니다.",
-    "detail": "LLM은 확인된 사실을 설명하는 역할에 집중하고, 인증·관계 매핑·세션 상태는 코드와 데이터베이스가 담당하도록 분리했습니다.",
-    "links": [],
-    "images": [
-      {
-        "src": "/media/10-tutor-bot-screenshot.webp",
-        "alt": "학부모에게 수업 정보를 안내하는 카카오톡 튜터봇 응답 화면",
-        "width": 390,
-        "height": 250,
-        "label": "카카오톡 응답 화면"
-      }
-    ],
-    "videos": [],
-    "featured": false,
-    "shortTitle": "카카오톡 과외 튜터봇",
-    "cardSummary": "확인된 수업 정보만 답하고, 불확실한 질문은 선생님 확인으로 연결합니다."
   },
   {
     "slug": "qwopus",
@@ -498,5 +511,101 @@
     "featured": false,
     "shortTitle": "DDI · 약물 상호작용 예측",
     "cardSummary": "새로운 약물 구조에서의 일반화와 예측 불확실성을 함께 평가합니다."
+  },
+  {
+    "slug": "norm-boundary",
+    "title": "시계열 정규화가 잃는 정보의 경계",
+    "shortTitle": "Norm Boundary · 정규화 연구",
+    "englishTitle": "When Instance Normalization Hides the Level",
+    "category": "research",
+    "categoryLabel": "시계열 · 방법론 연구",
+    "summary": "외생변수를 동일하게 제공한 조건에서 시계열 정규화의 영향을 분리해 살펴본 연구입니다. 입력 스케일에 따라 성능 차이의 방향이 바뀌는 조건을 분석하고, 이론·실험 기록·수치 검증을 연결했습니다.",
+    "cardSummary": "정규화의 성능 차이가 입력 스케일에 따라 뒤집히는 조건을 검증했습니다.",
+    "tools": [
+      "RevIN",
+      "NumPy · pandas",
+      "Monte Carlo",
+      "재현성 검증"
+    ],
+    "outcome": "같은 선형 모델에서도 외생변수 스케일에 따라 RevIN−RAW MSE가 +0.026에서 −0.030으로 전환",
+    "problem": "입력 구간마다 평균과 분산을 제거하는 정규화는 많은 시계열 모델의 기본 설정입니다. 그러나 기상처럼 미래 수준을 설명하는 외생변수가 있다면, 무엇을 제거하고 어떤 수준으로 복원하는지가 예측에 영향을 줍니다. 정보의 유무와 정규화·입력 스케일의 효과를 구분할 필요가 있습니다.",
+    "approach": [
+      "동일한 외생변수를 제공하는 비교 조건에서 정규화와 외생변수의 스케일 처리를 나눠 평가했습니다. 저장소에는 8개 데이터셋·5개 정규화 조건·7개 아키텍처의 실험 기록이 있습니다.",
+      "이론식의 가정이 유지되는 합성 데이터와 두꺼운 꼬리 분포를 함께 비교했습니다. 성립하는 조건과 가정이 깨지는 경우를 같은 검증 코드에 포함했습니다.",
+      "실험 수치와 표를 고정 CSV에서 다시 계산하는 검증 경로를 제공하고, 확인되지 않은 가설·데이터 한계·스레드 수에 따른 재현성 문제도 기록했습니다."
+    ],
+    "evaluation": "포트폴리오 검증 과정에서 공개 저장소의 원본 CPU 코드를 실행했습니다. 고정 CSV·표의 수치 검사는 82/82개, 이론 테스트는 14개 통과했습니다. 새로 생성한 합성 데이터에서는 셀마다 200만 표본을 사용해 7개 가우시안 조건 × 3개 식의 비교 21개가 원본 허용오차를 만족했습니다.",
+    "detail": "첫 그래프는 LinMix의 GEFCom-Wind·Solar 6개 조건을 각각 5개 시드로 평균한 기존 결과의 재집계이며, 실제 데이터로 모델을 다시 학습한 결과는 아닙니다. 두 번째 그래프는 이번에 실행한 합성 데이터 실험입니다. 저장소는 익명 워크숍 투고본으로 표기되어 있으며, 게재·채택 여부와 개인별 기여 범위는 별도 확인이 필요합니다.",
+    "links": [
+      {
+        "label": "GitHub에서 코드와 검증 기록 보기",
+        "url": "https://github.com/codespermuted/norm-boundary-ccai"
+      },
+      {
+        "label": "저장소의 연구 원고 보기",
+        "url": "https://github.com/codespermuted/norm-boundary-ccai/blob/main/paper/workshop_ccai.pdf"
+      },
+      {
+        "label": "이번 실행의 재현 방법과 결과",
+        "url": "https://github.com/codespermuted/jhyu-portfolio/tree/main/evidence/norm-boundary"
+      }
+    ],
+    "images": [
+      {
+        "src": "/media/norm-boundary-footing-reproduction.svg",
+        "alt": "기존 실험 CSV 재집계. LinMix의 풍력·태양광 6개 조건에서 RevIN 빼기 RAW MSE가 전역 표준화 +0.026, 분산 하한을 둔 구간 표준화 −0.075, 타깃 스케일 일치 −0.030으로 달라지는 그래프와 조건별 표",
+        "width": 1280,
+        "height": 860,
+        "label": "기존 실험 결과 재집계 · 입력 스케일에 따른 효과 변화"
+      },
+      {
+        "src": "/media/norm-boundary-theory-reproduction.svg",
+        "alt": "이번에 실행한 합성 데이터 실험. 가우시안 입력의 상호작용 오차는 이론값 1.740과 시뮬레이션 1.740이 일치하지만 t8 입력에서는 시뮬레이션 2.701로 가우시안 가정의 한계를 보여줌. 가우시안 조건 21개 비교 통과",
+        "width": 1280,
+        "height": 760,
+        "label": "새로 실행한 합성 실험 · 이론 가정과 수치 검증"
+      }
+    ],
+    "videos": [],
+    "featured": false
+  },
+  {
+    "slug": "tutor",
+    "title": "정형 DB 조회를 결합한 카카오톡 RAG 봇",
+    "englishTitle": "Structured-data RAG Assistant",
+    "category": "systems",
+    "categoryLabel": "정형 데이터 · RAG",
+    "summary": "인증된 학부모의 학생·수업 기록을 조회해 답변하는 봇입니다. 일정과 숙제는 규칙으로 안내하고, 일반 질문은 DB에서 가져온 기록을 Haiku의 답변 근거로 제공합니다.",
+    "tools": [
+      "FastAPI",
+      "SQLite",
+      "Claude Haiku",
+      "Kakao i Open Builder",
+      "Railway"
+    ],
+    "outcome": "규칙 응답과 DB 기반 생성 경로 분리 · 모델 호출에 4초 제한",
+    "problem": "학생별 수업 정보를 카카오톡에서 조회하면서, 사용자 권한과 5초 응답 제한을 함께 고려해야 했습니다. 코드로 답할 수 있는 질문과 생성 모델이 필요한 질문을 구분하는 것이 설계의 출발점이었습니다.",
+    "approach": [
+      "카카오 사용자와 학부모–학생–선생님 매핑으로 조회 범위를 정합니다. 질문에 등록된 학생 이름이 있으면 해당 학생의 기록으로 범위를 좁힙니다.",
+      "일정·숙제·메모·공지 등 정형 질문은 키워드로 분류한 뒤 SQL 조회 결과를 템플릿으로 안내합니다. 이 경로에서는 LLM을 호출하지 않습니다.",
+      "일반 질문은 학생의 일정, 미완료 숙제, 최근 수업 메모를 조립해 Haiku의 컨텍스트로 전달합니다. 임베딩이나 벡터 검색을 사용하지 않는 구조화된 DB 조회 기반 RAG입니다.",
+      "모델 호출은 asyncio로 4초 제한을 두고, 인증·관계 매핑·세션 상태는 SQLite와 코드에서 관리합니다."
+    ],
+    "evaluation": "2026년 11월 코드 점검에서 합성 데이터와 모의 DB·모델 응답으로 5개 분기를 검증했습니다. 미인증 접근, 정형 질문의 LLM 미호출, 학생 범위에 맞는 컨텍스트 조립, 일반 질문의 고정된 조회 범위, 시간 초과 경로를 확인했습니다. 실제 학생 정보나 외부 모델 API는 사용하지 않았으므로 답변 정확도·실제 응답 속도를 측정한 결과는 아닙니다.",
+    "detail": "근거 활용은 프롬프트 지침에 의존하며 생성 결과를 별도로 검증하지 않습니다. 시간 초과 시 기본 안내에 기록으로 뒷받침되지 않은 긍정 표현이 남아 있어, 이를 중립적인 재확인 안내로 바꾸는 것이 후속 개선 과제입니다. Railway 운영 당시 월 약 5천원의 비용이 기록되어 있으며 현재 운영 상태는 별도 확인이 필요합니다.",
+    "links": [],
+    "images": [
+      {
+        "src": "/media/10-tutor-bot-screenshot.webp",
+        "alt": "학부모에게 수업 정보를 안내하는 카카오톡 튜터봇 응답 화면",
+        "width": 390,
+        "height": 250,
+        "label": "카카오톡 응답 화면"
+      }
+    ],
+    "videos": [],
+    "featured": false,
+    "shortTitle": "DB 조회 기반 RAG 응답 시스템",
+    "cardSummary": "규칙 기반 조회와 DB 기록을 활용한 생성 응답을 분리한 카카오톡 서비스입니다."
   }
 ]

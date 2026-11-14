@@ -191,7 +191,7 @@ for (const file of files.filter((item) => item.endsWith('.css'))) {
 
 const projects = JSON.parse(await readFile(path.join(projectRoot, 'src/data/projects.json'), 'utf8'));
 const projectRoutes = htmlFiles.filter((file) => /^projects\/[^/]+\/index\.html$/.test(relative(file)));
-if (projects.length !== 11 || projectRoutes.length !== 11) fail(`Expected 11 project entries and routes; found ${projects.length} entries and ${projectRoutes.length} routes`);
+if (!projects.length || projectRoutes.length !== projects.length) fail(`Expected one route per project; found ${projects.length} entries and ${projectRoutes.length} routes`);
 if (new Set(projects.map((project) => project.slug)).size !== projects.length) fail('Project slugs are not unique');
 for (const project of projects) {
   if (!documents.has(path.join(outputRoot, 'projects', project.slug, 'index.html'))) fail(`Missing project route ${project.slug}`);

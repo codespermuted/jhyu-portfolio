@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Arrow from '../../components/Arrow.astro';
+import TutorArchitecture from '../../components/TutorArchitecture.astro';
 import projects from '../../data/projects.json';
 export function getStaticPaths() { return projects.map((project, index) => ({ params: { slug: project.slug }, props: { project, next: projects[(index + 1) % projects.length] } })); }
 const { project, next } = Astro.props;
@@ -14,7 +15,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <aside class="case-toc" aria-label="이 프로젝트의 목차"><a href="#problem">문제</a><a href="#approach">설계</a><a href="#evaluation">결과와 검증</a>{(project.images.length > 0 || project.videos.length > 0) && <a href="#evidence">결과 자료</a>}{project.links.length > 0 && <a href="#links">원문과 코드</a>}</aside>
       <div class="case-body">
         <section id="problem"><h2>해결할 문제</h2><p>{project.problem}</p></section>
-        <section id="approach"><h2>설계와 구현</h2><ul class="approach-list">{project.approach.map(item => <li>{item}</li>)}</ul></section>
+        <section id="approach"><h2>설계와 구현</h2><ul class="approach-list">{project.approach.map(item => <li>{item}</li>)}</ul>{project.slug === 'tutor' && <TutorArchitecture />}</section>
         <section id="evaluation"><h2>결과와 검증</h2><p class="result-statement">{project.outcome}</p><p>{project.evaluation}</p>{project.detail && <p>{project.detail}</p>}</section>
         {(project.images.length > 0 || project.videos.length > 0) && <section id="evidence"><h2>결과 자료</h2>
           {project.videos.length > 0 && <><p>계절별 관측과 예측을 비교할 수 있습니다. 영상을 재생하면 해당 파일을 불러옵니다.</p><div class="video-list">{project.videos.map(video => <figure><h3>{video.label}</h3><video controls playsinline preload="none" width={video.width} height={video.height} poster={`${base}${video.poster}`} aria-label={video.alt}><source src={`${base}${video.src}`} type="video/mp4" /><a href={`${base}${video.src}`}>영상 다운로드</a></video></figure>)}</div></>}
