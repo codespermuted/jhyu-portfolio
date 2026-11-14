@@ -1,0 +1,502 @@
+[
+  {
+    "slug": "smp",
+    "title": "급변하는 SMP 가격을 예측하는 모델",
+    "englishTitle": "SMP Forecasting",
+    "category": "forecasting",
+    "categoryLabel": "시계열 예측",
+    "summary": "평상시와 가격이 급변하는 시간대를 나누고, 과소예측의 위험을 손실함수에 반영했습니다. 복잡한 모델보다 안정적인 기준 모델에서 개선을 쌓았습니다.",
+    "tools": [
+      "DLinear",
+      "Asymmetric Huber",
+      "Focal loss"
+    ],
+    "outcome": "평균 오차 2원 · 급변 구간 오차 30원 개선",
+    "problem": "SMP 가격은 정상 시간대와 10–14시의 급락·급등 구간에서 서로 다른 양상을 보입니다. 전체 구간에 같은 기준을 적용하면 드물지만 중요한 급변 사례와 과소예측 위험을 충분히 다루기 어렵습니다.",
+    "approach": [
+      "Attention 기반 모델과 비교해 더 안정적이었던 DLinear를 기준 모델로 삼았습니다.",
+      "정상 구간과 급변 구간을 서로 다른 regime으로 나누어 도메인 특성을 모델링에 반영했습니다.",
+      "Asymmetric Huber로 과소예측에 다른 비용을 부여하고, Focal loss로 드문 급변 사례에 학습이 집중되도록 설계했습니다."
+    ],
+    "evaluation": "평균 오차는 2원, 급변 구간 오차는 30원 개선했습니다. 성능이 좋았던 날뿐 아니라 중간·최악 사례의 실제값과 예측값도 함께 비교해, 모델이 잘 맞는 조건과 오차가 커지는 조건을 살펴봅니다.",
+    "detail": "아래 기술 부록에는 두 regime과 손실함수의 설계를 정리했습니다. 세 예측 그래프는 모델이 잘 맞는 상황과 실패하는 상황을 함께 살펴보기 위한 자료입니다.",
+    "links": [],
+    "images": [
+      {
+        "src": "/media/03-smp-best-day-chart.webp",
+        "alt": "SMP 예측 성능이 좋았던 날의 실제값과 예측값 비교 그래프",
+        "width": 332,
+        "height": 340,
+        "label": "성능이 좋았던 날"
+      },
+      {
+        "src": "/media/04-smp-middle-day-chart.webp",
+        "alt": "SMP 예측 성능이 중간 수준이었던 날의 실제값과 예측값 비교 그래프",
+        "width": 334,
+        "height": 339,
+        "label": "중간 수준의 날"
+      },
+      {
+        "src": "/media/05-smp-worst-day-chart.webp",
+        "alt": "SMP 예측 오차가 컸던 날의 실제값과 예측값 비교 그래프",
+        "width": 326,
+        "height": 339,
+        "label": "오차가 컸던 날"
+      },
+      {
+        "src": "/media/19-appendix-e-smp-regime-custom-loss.webp",
+        "alt": "SMP 가격 예측의 두 regime과 custom loss를 설명하는 기술 부록",
+        "width": 1728,
+        "height": 972,
+        "label": "기술 부록 · Regime과 손실함수"
+      }
+    ],
+    "videos": [],
+    "featured": true,
+    "shortTitle": "SMP 전력시장 가격 예측",
+    "cardSummary": "평상시와 급변 구간을 나누고, 과소예측의 위험을 손실함수에 반영했습니다."
+  },
+  {
+    "slug": "nowcasting",
+    "title": "위성 영상으로 보는 3시간 뒤의 수증기",
+    "englishTitle": "Water Vapor Nowcasting",
+    "category": "forecasting",
+    "categoryLabel": "영상·시계열 예측",
+    "summary": "한반도의 6.9μm 위성 영상으로 향후 3시간의 수증기 변화를 예측합니다. 사계절 테스트로 계절이 달라졌을 때의 예측 양상을 확인했습니다.",
+    "tools": [
+      "SimVP",
+      "Video prediction",
+      "위성 영상"
+    ],
+    "outcome": "12개 입력 프레임에서 18개 미래 프레임 예측",
+    "problem": "10분 간격으로 관측되는 위성 영상에서 시간에 따른 수증기의 이동과 변화를 예측하는 과제입니다. 특정 계절에만 맞는 모델이 되지 않도록 계절별 일반화도 확인해야 했습니다.",
+    "approach": [
+      "6.9μm 채널의 위성 영상 12개를 입력받아, 10분 간격의 미래 영상 18개를 생성하도록 과제를 구성했습니다.",
+      "SimVP를 기반으로 결정론적 예측 모델을 먼저 검증해 후속 실험을 위한 기준을 마련했습니다.",
+      "봄·여름·가을·겨울 테스트 결과를 각각 시각화해 계절별 예측 양상을 비교했습니다."
+    ],
+    "evaluation": "봄·여름·가을·겨울 테스트 세트에서 예측 결과를 확인했습니다. 관측 영상과 예측 영상을 나란히 제시해 시간에 따른 수증기의 이동과 변화가 어떻게 재현되는지 비교합니다.",
+    "detail": "현재는 결정론적 backbone을 검증한 단계입니다. Window augmentation과 diffusion 기반 접근은 후속 실험 후보로 두고 있습니다.",
+    "links": [],
+    "images": [],
+    "videos": [
+      {
+        "src": "/media/06-spring-nowcasting-gif.mp4",
+        "poster": "/media/06-spring-nowcasting-gif.webp",
+        "alt": "봄 테스트 세트의 한반도 수증기 관측·예측 비교 영상",
+        "label": "봄 테스트",
+        "width": 1584,
+        "height": 462
+      },
+      {
+        "src": "/media/07-summer-nowcasting-gif.mp4",
+        "poster": "/media/07-summer-nowcasting-gif.webp",
+        "alt": "여름 테스트 세트의 한반도 수증기 관측·예측 비교 영상",
+        "label": "여름 테스트",
+        "width": 1584,
+        "height": 462
+      },
+      {
+        "src": "/media/08-autumn-nowcasting-gif.mp4",
+        "poster": "/media/08-autumn-nowcasting-gif.webp",
+        "alt": "가을 테스트 세트의 한반도 수증기 관측·예측 비교 영상",
+        "label": "가을 테스트",
+        "width": 1584,
+        "height": 462
+      },
+      {
+        "src": "/media/09-winter-nowcasting-gif.mp4",
+        "poster": "/media/09-winter-nowcasting-gif.webp",
+        "alt": "겨울 테스트 세트의 한반도 수증기 관측·예측 비교 영상",
+        "label": "겨울 테스트",
+        "width": 1584,
+        "height": 462
+      }
+    ],
+    "featured": true,
+    "shortTitle": "한반도 수증기 Nowcasting",
+    "cardSummary": "위성 영상 12장으로 3시간 뒤까지 예측하고, 사계절 결과를 비교했습니다."
+  },
+  {
+    "slug": "apartment-power",
+    "title": "사용 이력이 없는 아파트의 전력 수요 예측",
+    "englishTitle": "Apartment Power Forecasting",
+    "category": "forecasting",
+    "categoryLabel": "시계열 예측",
+    "summary": "입주 전 개별 전력 사용 이력이 없는 상황에서 수요를 예측하는 단일 모델을 설계했습니다. 기상과 달력 정보를 활용해 누진구간 진입 가능성을 미리 안내하는 것이 목표입니다.",
+    "tools": [
+      "N-BEATS",
+      "기상 예보",
+      "달력 변수"
+    ],
+    "outcome": "사용 이력이 없는 cold-start 조건을 위한 모델 설계",
+    "problem": "신축 아파트는 입주 전 개별 가구의 전력 사용 이력이 없습니다. 과거 개인 사용량에 의존하지 않고도 수요를 추정할 수 있는 일반화 모델이 필요했습니다.",
+    "approach": [
+      "N-BEATS의 basis decomposition을 기준으로 단일 예측 모델을 설계했습니다.",
+      "기상 예보, 불쾌지수, 공휴일과 시간의 주기성을 나타내는 sin/cos 변수를 입력에 반영했습니다.",
+      "예측값을 누진구간 진입 가능성의 사전 안내에 연결하는 것을 목표로 했습니다."
+    ],
+    "evaluation": "Cold-start 상황을 고려해 validation set에서 평가했습니다. 정량 성능의 세부 지표와 평가 조건은 미공개입니다.",
+    "detail": "기술 부록에 N-BEATS 기반 구조와 cold-start 예측 설계를 정리했습니다.",
+    "links": [],
+    "images": [
+      {
+        "src": "/media/18-appendix-d.webp",
+        "alt": "신축 아파트의 cold-start 전력 수요 예측과 N-BEATS 구조를 설명하는 기술 부록",
+        "width": 1728,
+        "height": 972,
+        "label": "기술 부록 · 아파트 전력 수요 예측"
+      }
+    ],
+    "videos": [],
+    "featured": false,
+    "shortTitle": "신축 아파트 전력 수요 예측",
+    "cardSummary": "개별 사용 이력이 없는 환경에서 기상·달력 정보로 전력 수요를 예측합니다."
+  },
+  {
+    "slug": "mojo",
+    "title": "코딩 세션의 노하우를 남기는 Mojo",
+    "englishTitle": "Mojo · Scoped Knowledge Reference",
+    "category": "systems",
+    "categoryLabel": "LLM 시스템",
+    "summary": "Claude·Codex 세션과 작업 기록에서 재사용할 지식을 추출하는 로컬 도구입니다. 근거와 적용 범위를 함께 저장하고, 다음 작업에 필요한 지식을 MOJO.md로 제공합니다.",
+    "tools": [
+      "Claude · Codex",
+      "SQLite",
+      "Markdown",
+      "D3"
+    ],
+    "outcome": "작업 기록 수집부터 검토·검색·MOJO.md 생성까지",
+    "problem": "Git commit, CLAUDE.md, 세션 대화에 흩어진 개발 지식은 작업이 끝난 뒤 다시 활용하기 어렵습니다. 기록을 요약하는 것에서 나아가 검토와 재사용이 가능한 지식으로 남기고자 했습니다.",
+    "approach": [
+      "로컬 hook과 backfill 명령으로 Claude·Codex 세션, commit, 메모와 의사결정 기록을 수집하고, 후보 선별과 지식 구조화를 두 단계로 나눴습니다.",
+      "지식을 SQLite와 Markdown으로 관리하며, 근거의 품질과 적용 범위를 별도로 기록했습니다. 프로젝트에서 얻은 판단이 다른 환경에도 무조건 적용되지 않도록 범위와 반례를 함께 저장합니다.",
+      "대시보드의 목록과 지식 그래프에서 사용자가 내용을 검토·승인·수정할 수 있도록 구성했습니다.",
+      "현재 작업과 관련된 지식을 골라 MOJO.md에 제공합니다. 기본 attach·refresh·detach 흐름은 사람이 작성한 AGENTS.md나 CLAUDE.md를 직접 바꾸지 않습니다."
+    ],
+    "evaluation": "공개 구현은 작업 기록 수집, 지식 추출, 검토와 검색, MOJO.md 생성을 연결합니다. 지식의 근거, 검토 상태, 적용 조건과 반례를 함께 보여주어 사용자가 재사용 여부를 판단할 수 있게 했습니다.",
+    "detail": "초기에는 지식 검토 대시보드에 집중했고, 이후 작업별 참고 문서를 생성하는 구조로 확장했습니다. 아래 화면은 초기 대시보드이며, 현재 기능과 사용법은 연결된 저장소에서 확인할 수 있습니다.",
+    "links": [
+      {
+        "label": "GitHub에서 소스 보기",
+        "url": "https://github.com/codespermuted/mojo"
+      }
+    ],
+    "images": [
+      {
+        "src": "/media/11-mojo-dashboard-screenshot.webp",
+        "alt": "Mojo 초기 버전의 지식 그래프와 검토 대시보드 화면",
+        "width": 698,
+        "height": 376,
+        "label": "초기 지식 검토 대시보드"
+      }
+    ],
+    "videos": [],
+    "featured": true,
+    "shortTitle": "Mojo · 코딩 지식 관리",
+    "cardSummary": "Claude·Codex 작업 기록에서 다음 작업에 쓸 지식을 추출하고 정리합니다."
+  },
+  {
+    "slug": "tutor",
+    "title": "확인된 수업 정보만 답하는 카카오톡 튜터봇",
+    "englishTitle": "KakaoTalk Tutor Bot",
+    "category": "systems",
+    "categoryLabel": "LLM 서비스",
+    "summary": "학부모에게 과외 정보를 전달하고, 데이터베이스에서 확인되는 사실만 답하는 봇입니다. 답을 확인할 수 없거나 제한 시간에 걸리면 선생님 확인으로 연결합니다.",
+    "tools": [
+      "FastAPI",
+      "SQLite",
+      "Claude Haiku",
+      "Kakao i Open Builder",
+      "Railway"
+    ],
+    "outcome": "5초 응답 제한을 고려한 운영 구조 · 월 약 5천원",
+    "problem": "학부모에게 정확한 수업 정보를 전달하면서 카카오톡의 5초 응답 제한도 지켜야 했습니다. 확인되지 않은 정보를 생성하거나 응답을 끝없이 기다리게 하지 않는 것이 핵심이었습니다.",
+    "approach": [
+      "답변의 근거를 DB context로 제한하고, 3문장 응답과 금지 조언 차단 규칙을 두었습니다.",
+      "Haiku 호출에 4초 asyncio 제한을 두고, 시간 초과나 확인할 수 없는 질문에는 선생님 확인을 안내하는 fallback을 구성했습니다.",
+      "세션 상태는 LLM 대신 SQLite에서 관리하고, 인증코드로 학부모와 학생을 N:N 관계로 연결했습니다."
+    ],
+    "evaluation": "Railway에 상시 배포해 운영했으며, 운영 당시 비용은 월 약 5천원입니다. 응답 제한에 맞춘 정상 처리와 시간 초과 경로를 나누고, 확인되지 않은 질문은 선생님 확인으로 연결하도록 구성했습니다.",
+    "detail": "LLM은 확인된 사실을 설명하는 역할에 집중하고, 인증·관계 매핑·세션 상태는 코드와 데이터베이스가 담당하도록 분리했습니다.",
+    "links": [],
+    "images": [
+      {
+        "src": "/media/10-tutor-bot-screenshot.webp",
+        "alt": "학부모에게 수업 정보를 안내하는 카카오톡 튜터봇 응답 화면",
+        "width": 390,
+        "height": 250,
+        "label": "카카오톡 응답 화면"
+      }
+    ],
+    "videos": [],
+    "featured": false,
+    "shortTitle": "카카오톡 과외 튜터봇",
+    "cardSummary": "확인된 수업 정보만 답하고, 불확실한 질문은 선생님 확인으로 연결합니다."
+  },
+  {
+    "slug": "qwopus",
+    "title": "로컬 환경에서 도구를 쓰는 코딩 에이전트",
+    "englishTitle": "qwopus · Local Coding Agent",
+    "category": "systems",
+    "categoryLabel": "로컬 LLM",
+    "summary": "RTX 5060 Ti 16GB 두 장에서 구동하는 로컬 코딩 에이전트입니다. 모델에 파일·터미널·검색 도구를 연결하고 실행 과정의 안정성을 다룹니다.",
+    "tools": [
+      "Qwen3.5-27B Opus Distill",
+      "Q5_K_M",
+      "Multi-GPU",
+      "Tool calling"
+    ],
+    "outcome": "로컬 27B 모델에 개발·검색 도구를 연결",
+    "problem": "로컬 모델을 개발 작업에 사용하려면 텍스트 생성 외에 파일 조작, 검색, 명령 실행을 안정적으로 연결해야 합니다. 모델의 성능뿐 아니라 도구 호출과 반복 실행을 관리하는 하네스가 중요했습니다.",
+    "approach": [
+      "Qwen3.5-27B Opus Distill의 Q5_K_M 모델을 dual RTX 5060 Ti 16GB 환경에서 실행하도록 구성했습니다.",
+      "Bash, 파일 읽기·쓰기·편집, Glob, Grep, ProjectScan과 웹 검색·Fetch·GitHub·Scholar·StackOverflow 도구를 연결했습니다.",
+      "Multi-GPU 분할, 스트리밍, hook과 loop guard를 실행 구조에 포함했습니다."
+    ],
+    "evaluation": "로컬 다중 GPU 환경에서 모델 추론과 개발 도구 호출을 연결했습니다. 스크립트 작성 결과의 검증, 반복 호출 감지와 도구 실행의 안정성을 주요 개선 대상으로 두었습니다.",
+    "detail": "Claude Code와 유사한 작업 흐름을 로컬 환경에서 구현하는 것이 목표입니다. 모델 자체보다 실행을 뒷받침하는 도구와 제어 구조에 초점을 맞췄습니다.",
+    "links": [
+      {
+        "label": "GitHub에서 소스 보기",
+        "url": "https://github.com/codespermuted/qwopus"
+      }
+    ],
+    "images": [
+      {
+        "src": "/media/12-qwopus-local-agent-screenshot.webp",
+        "alt": "qwopus 로컬 코딩 에이전트의 터미널 실행과 도구 호출 화면",
+        "width": 485,
+        "height": 730,
+        "label": "로컬 에이전트 실행 화면"
+      }
+    ],
+    "videos": [],
+    "featured": false,
+    "shortTitle": "qwopus · 로컬 코딩 에이전트",
+    "cardSummary": "로컬 27B 모델에 파일·터미널·검색 도구와 실행 제어를 연결합니다."
+  },
+  {
+    "slug": "timeseries-agent",
+    "title": "모델 블록을 조합하는 LLM 시계열 모델러",
+    "englishTitle": "LLM Time-series Modeler",
+    "category": "systems",
+    "categoryLabel": "LLM·모델 탐색",
+    "summary": "로컬 27B 모델이 시계열 모델의 후보를 조사하고 구성하도록 설계했습니다. 코드를 자유롭게 생성하게 하기보다, 구조 슬롯과 검증할 블록을 제공해 탐색 범위를 좁혔습니다.",
+    "tools": [
+      "Local 27B LLM",
+      "FourierEnc",
+      "RegimeGate",
+      "AsymHuber"
+    ],
+    "outcome": "조사부터 학습·비평까지 역할을 나눈 탐색 구조",
+    "problem": "AutoML 이후에는 도메인 지식을 반영한 커스텀 모델을 탐색할 필요가 있습니다. 로컬 27B 모델을 전제로 할 때, 모든 구조를 자유롭게 생성하게 하면 추론과 구현의 난도가 커집니다.",
+    "approach": [
+      "Scout → Engineer → Architect → Trainer → Critic으로 역할을 나누어 첫 모델 전수조사를 자동화하는 흐름을 구성했습니다.",
+      "Encoder, time/channel mix, head, loss를 슬롯으로 나누어 모델의 선택 지점을 명확히 했습니다.",
+      "FourierEnc, RegimeGate, AsymHuber 등의 블록 풀을 제공하고, 자유 생성 대신 조합을 선택하게 해 실패 가능한 범위를 줄이도록 설계했습니다."
+    ],
+    "evaluation": "공개 구현인 CBALLM에서는 데이터의 근거와 기본 선택을 제시하고, Architect가 제한된 질문에 답하도록 구성했습니다. 각 결정의 이유를 기록해 어떤 데이터에 왜 그 모델을 선택했는지 확인할 수 있게 했습니다.",
+    "detail": "Scout·Engineer·Trainer·Critic은 규칙과 템플릿으로 실행하고 Architect에만 LLM을 사용합니다. 모델 후보의 조사와 조합을 지원하고, 선택 근거를 남기는 것이 핵심입니다.",
+    "links": [
+      {
+        "label": "GitHub에서 소스 보기",
+        "url": "https://github.com/codespermuted/cballm"
+      }
+    ],
+    "images": [
+      {
+        "src": "/media/13-llm-time-series-modeler-screenshot.webp",
+        "alt": "LLM 시계열 모델러의 작업 흐름과 모델 조합 실행 화면",
+        "width": 1774,
+        "height": 887,
+        "label": "시계열 모델러 실행 화면"
+      }
+    ],
+    "videos": [],
+    "featured": false,
+    "shortTitle": "CBALLM · 시계열 모델 탐색",
+    "cardSummary": "모델 블록을 조합하고 설계 결정의 근거를 남기는 시계열 탐색 파이프라인입니다."
+  },
+  {
+    "slug": "pomp",
+    "title": "순서가 있는 그룹에서 미생물 변화를 찾는 POMp",
+    "englishTitle": "POMp · Ordinal Microbiome Analysis",
+    "category": "research",
+    "categoryLabel": "생물정보학·석사 연구",
+    "summary": "정상→과체중→비만처럼 순서가 있는 그룹에서 점진적으로 달라지는 미생물을 찾는 방법을 연구했습니다. 그룹의 순서와 공변량을 함께 고려해 검정을 설계했습니다.",
+    "tools": [
+      "CLR transformation",
+      "Proportional Odds",
+      "Residual permutation"
+    ],
+    "outcome": "순서 정보를 활용하는 1 DoF 검정 설계",
+    "problem": "순서가 있는 그룹을 단순히 서로 다른 범주로만 다루면 점진적인 변화를 놓칠 수 있습니다. 미생물 데이터의 많은 0값과 공변량의 영향을 함께 고려하는 분석 방법이 필요했습니다.",
+    "approach": [
+      "CLR 변환과 공변량 잔차화를 적용해 미생물 데이터와 공변량의 영향을 다뤘습니다.",
+      "Proportional Odds 모델로 그룹의 순서를 분석에 반영했습니다.",
+      "Residual permutation으로 귀무분포를 만들고, 1 자유도 검정으로 검정력을 확보하면서 분포 가정을 완화하는 접근을 구성했습니다."
+    ],
+    "evaluation": "검정의 중심은 순서 정보의 활용과 residual permutation 기반 귀무분포입니다. 아래 연구 자료와 기술 부록에 분석 흐름과 수식을 함께 제시합니다.",
+    "detail": "석사 연구 프로젝트입니다. 검정의 구조와 가정을 확인할 수 있도록 수식을 별도 자료로 정리했습니다.",
+    "links": [],
+    "images": [
+      {
+        "src": "/media/01-pomp-media-preview.webp",
+        "alt": "POMp 순서형 미생물 차등분석 연구 자료",
+        "width": 665,
+        "height": 256,
+        "label": "POMp 연구 자료"
+      },
+      {
+        "src": "/media/14-appendix-a-pomp.webp",
+        "alt": "POMp의 PO 모델, CLR 변환, 공변량 잔차화와 순열 검정 수식",
+        "width": 1728,
+        "height": 972,
+        "label": "기술 부록 · POMp 수식"
+      }
+    ],
+    "videos": [],
+    "featured": false,
+    "shortTitle": "POMp · 순서형 미생물 분석",
+    "cardSummary": "그룹의 순서와 공변량을 함께 고려해 점진적인 미생물 변화를 검정합니다."
+  },
+  {
+    "slug": "gene-clustering",
+    "title": "유전자 군집과 약물 탐색 점수의 통계적 근거",
+    "englishTitle": "Gene Clustering · L1000 / CMAP",
+    "category": "research",
+    "categoryLabel": "생물정보학·신약 파이프라인",
+    "summary": "신약 연구 파이프라인에서 해석 가능한 유전자 군집과 후보를 구분하는 점수를 다뤘습니다. 군집 소속 판단과 약물 랭킹에 통계적 근거를 결합했습니다.",
+    "tools": [
+      "NMF",
+      "ICA",
+      "MCL",
+      "Permutation",
+      "L1000 · CMAP"
+    ],
+    "outcome": "Soft membership과 effect-size 가중 점수 설계",
+    "problem": "신약 파이프라인에서는 유전자가 어느 군집에 속하는지 해석하고, 후보 약물의 우선순위를 구분할 수 있어야 합니다. 군집과 점수를 실제 연구에 활용할 수 있도록 통계적 근거를 더하는 작업입니다.",
+    "approach": [
+      "NMF, ICA, MCL 기반의 soft membership으로 유전자 군집을 다뤘습니다.",
+      "Permutation null과 FDR을 활용해 군집 소속을 판단하도록 구성했습니다.",
+      "CMAP 점수에 effect size 가중치를 반영해 후보 랭킹의 구분력을 높이는 방향으로 설계했습니다."
+    ],
+    "evaluation": "군집 소속 판단에는 순열 기반 귀무분포와 FDR을, 후보 랭킹에는 effect-size weighted score를 사용했습니다. 군집의 통계적 근거와 후보 약물의 우선순위를 함께 해석할 수 있도록 구성했습니다.",
+    "detail": "DR.NOAH BIOTECH의 신약 연구 파이프라인 경험으로, 통계적 해석과 실제 사용할 점수를 연결하는 데 초점을 맞췄습니다.",
+    "links": [],
+    "images": [
+      {
+        "src": "/media/02-pipeline-media-preview.webp",
+        "alt": "유전자 군집과 L1000·CMAP 점수 분석 파이프라인 자료",
+        "width": 874,
+        "height": 398,
+        "label": "유전자 군집·점수 분석 자료"
+      }
+    ],
+    "videos": [],
+    "featured": false,
+    "shortTitle": "유전자 군집과 약물 탐색 점수",
+    "cardSummary": "군집 소속 판단과 약물 후보 랭킹에 순열 검정과 효과 크기를 반영합니다."
+  },
+  {
+    "slug": "inflammation",
+    "title": "이미지로 염증 강도를 분류하는 약효 평가",
+    "englishTitle": "Image-based Drug Efficacy Evaluation",
+    "category": "research",
+    "categoryLabel": "이미지 분석·논문",
+    "summary": "CNS 이미지의 염증 강도를 6개 클래스로 분류해 약효 평가를 자동화했습니다. Plate 단위 교차검증과 앙상블을 적용해 실험 배치의 영향을 고려했습니다.",
+    "tools": [
+      "EfficientNet-B5",
+      "Leave-plates-out CV",
+      "Ensemble",
+      "McNemar test"
+    ],
+    "outcome": "CTL·LPS 테스트 이미지에서 F1 69% → 77%",
+    "problem": "이미지 기반 약효 평가에서는 염증의 강도를 구분하는 것뿐 아니라 실험 plate에 따른 차이도 고려해야 합니다. 검증 데이터가 학습 데이터와 같은 배치의 특성에 기대지 않도록 평가를 구성했습니다.",
+    "approach": [
+      "EfficientNet-B5를 사용해 CNS 이미지의 염증 강도를 6개 클래스로 분류했습니다.",
+      "Leave-plates-out 방식으로 plate 단위 교차검증을 구성해 배치 영향을 고려했습니다.",
+      "4개 모델의 예측을 평균한 앙상블을 적용하고 McNemar 검정으로 예측 차이를 확인했습니다."
+    ],
+    "evaluation": "대조군(CTL)과 저농도 LPS 처리군에서 각각 6개 well, 총 180개 테스트 이미지를 평가했습니다. 교차검증에서 선택한 단일 모델과 4개 모델 앙상블의 F1은 각각 69%, 77%였습니다. 논문 본문의 McNemar 검정 결과는 χ² = 27.27, p < 0.001입니다.",
+    "detail": "위 F1 비교는 CTL·LPS 테스트 이미지에 대한 결과로, 전체 6개 클래스의 분류 성능과는 평가 조건이 다릅니다. 기술 부록에는 plate 단위 교차검증과 앙상블 구성을 정리했습니다.",
+    "links": [
+      {
+        "label": "PLOS ONE 논문 읽기",
+        "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0320204"
+      },
+      {
+        "label": "NeuroRG 코드 보기",
+        "url": "https://github.com/codespermuted/NeuroRG"
+      }
+    ],
+    "images": [
+      {
+        "src": "/media/15-appendix-b-leave-plates-out-cv-ensemble.webp",
+        "alt": "Leave-plates-out 교차검증과 4개 모델 앙상블을 설명하는 기술 부록",
+        "width": 1728,
+        "height": 972,
+        "label": "기술 부록 · 교차검증과 앙상블"
+      }
+    ],
+    "videos": [],
+    "featured": false,
+    "shortTitle": "이미지 기반 약효 평가",
+    "cardSummary": "실험 배치를 고려한 검증과 앙상블로 염증 이미지 분류를 개선했습니다."
+  },
+  {
+    "slug": "ddi",
+    "title": "새로운 약물 구조까지 평가하는 DDI 예측",
+    "englishTitle": "Drug–Drug Interaction Prediction",
+    "category": "research",
+    "categoryLabel": "신약 예측·논문",
+    "summary": "약물 간 상호작용을 예측하고, 새로운 scaffold에서도 일반화되는지 평가하는 파이프라인입니다. 예측 결과와 함께 불확실성을 살펴볼 수 있도록 구성했습니다.",
+    "tools": [
+      "Multi-output DNN",
+      "Modified FedAVG",
+      "MC Dropout",
+      "Scaffold split"
+    ],
+    "outcome": "Scaffold 기반 4단계 평가와 불확실성 추정",
+    "problem": "이미 본 약물과 유사한 구조에서 잘 맞는 것만으로는 신약에 대한 일반화를 판단하기 어렵습니다. 서로 다른 약물 구조와 label을 고려한 학습 및 평가가 필요했습니다.",
+    "approach": [
+      "SSP, ADMET, DTI 특징을 결합해 약물을 509차원 벡터로 표현했습니다.",
+      "Multi-output DNN과 modified FedAVG를 사용하고, 이종 label 환경에서 공유층만 평균하는 구조를 적용했습니다.",
+      "Murcko scaffold 기반 4-level split으로 평가 조건을 나누었습니다.",
+      "MC Dropout과 Gini impurity로 예측 불확실성을 함께 제시했습니다."
+    ],
+    "evaluation": "Scaffold 기반의 네 평가 수준으로 약물 구조에 따른 일반화를 확인하는 설계입니다. 예측의 불확실성도 함께 다루며, 구체적인 실험 조건과 성능은 연결된 논문에서 확인할 수 있습니다.",
+    "detail": "기술 부록에는 modified FedAVG의 공유층 평균 방식과 scaffold 기반 4단계 평가 구성을 나누어 정리했습니다.",
+    "links": [
+      {
+        "label": "JCIM 논문 읽기",
+        "url": "https://pubs.acs.org/doi/10.1021/acs.jcim.5c00075"
+      },
+      {
+        "label": "SF-RX 코드 보기",
+        "url": "https://github.com/codespermuted/SF-RX"
+      }
+    ],
+    "images": [
+      {
+        "src": "/media/16-appendix-c1-modified-fedavg.webp",
+        "alt": "이종 label 환경에서 공유층만 평균하는 modified FedAVG 구조",
+        "width": 1728,
+        "height": 972,
+        "label": "기술 부록 · Modified FedAVG"
+      },
+      {
+        "src": "/media/17-appendix-c2-scaffold-4-level.webp",
+        "alt": "Murcko scaffold 기반 4단계 일반화 평가 구성",
+        "width": 1728,
+        "height": 972,
+        "label": "기술 부록 · Scaffold 기반 평가"
+      }
+    ],
+    "videos": [],
+    "featured": false,
+    "shortTitle": "DDI · 약물 상호작용 예측",
+    "cardSummary": "새로운 약물 구조에서의 일반화와 예측 불확실성을 함께 평가합니다."
+  }
+]

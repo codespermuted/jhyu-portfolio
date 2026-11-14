@@ -1,0 +1,36 @@
+{
+  "nameKo": "유재홍",
+  "nameEn": "Jaehong Yu",
+  "role": "Data Scientist",
+  "email": "jaehongyu0105@gmail.com",
+  "github": "https://github.com/codespermuted",
+  "intro": "생물정보학 연구에서 익힌 검정과 평가를 바탕으로, 전력·SMP 시계열 예측과 LLM 시스템을 만듭니다. 도메인의 문제를 모델 구조로 옮기고, 결과를 검증해 실제로 사용할 수 있는 형태로 연결합니다.",
+  "education": [
+    { "institution": "서울대학교", "focus": "생물정보학 석사" },
+    { "institution": "한동대학교", "focus": "수학통계·컴퓨터공학" }
+  ],
+  "career": [
+    { "organization": "Herit", "role": "Data Scientist" },
+    { "organization": "DR.NOAH BIOTECH", "role": "R&D 연구원" }
+  ],
+  "principles": [
+    {
+      "title": "규칙으로 풀 수 있는 일부터",
+      "description": "명확한 규칙은 코드로 처리하고, 규칙만으로 판단하기 어려운 부분에 LLM을 사용합니다."
+    },
+    {
+      "title": "평가를 설계의 일부로",
+      "description": "모델을 고르는 일만큼 데이터 분할과 검증 방법을 중요하게 봅니다. 실패 사례를 다음 개선의 출발점으로 삼습니다."
+    },
+    {
+      "title": "사용할 수 있는 결과물까지",
+      "description": "모델의 출력이 실제 작업에 쓰이도록 도구, 저장 구조, 예외 처리와 사용 화면을 함께 설계합니다."
+    }
+  ],
+  "skills": [
+    { "label": "통계·머신러닝", "items": ["순열 검정", "Proportional Odds", "NMF · ICA · MCL", "MC Dropout"] },
+    { "label": "시계열·영상 예측", "items": ["N-BEATS", "DLinear", "SimVP", "PyTorch"] },
+    { "label": "LLM 시스템", "items": ["Claude API", "Qwen", "Claude Code", "도구 호출·평가 루프"] },
+    { "label": "서비스 구현", "items": ["FastAPI", "SQLite", "Kakao i Open Builder", "Railway"] }
+  ]
+}

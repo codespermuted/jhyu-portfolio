@@ -1,0 +1,30 @@
+---
+const { images } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const current = images[1];
+---
+<div class="smp-comparison">
+  <div class="comparison-heading"><span>실제 가격과 예측 비교</span><span id="chart-caption">{current.label}</span></div>
+  <img id="smp-chart" src={`${base}${current.src}`} alt={current.alt} width={current.width} height={current.height} loading="lazy" decoding="async" />
+  <div class="chart-controls" aria-label="SMP 예측 사례 선택" hidden>
+    {images.map((img: { src: string; alt: string; label: string }, index: number) => <button type="button" data-chart-src={`${base}${img.src}`} data-chart-alt={img.alt} aria-pressed={index === 1 ? 'true' : 'false'}>{img.label}</button>)}
+  </div>
+  <span class="sr-only" id="chart-status" role="status" aria-live="polite"></span>
+</div>
+<script>
+  const chart = document.querySelector<HTMLImageElement>('#smp-chart');
+  const controls = document.querySelector<HTMLElement>('.chart-controls');
+  const choices = [...document.querySelectorAll<HTMLButtonElement>('[data-chart-src]')];
+  if (chart && controls) {
+    controls.hidden = false;
+    choices.forEach(button => button.addEventListener('click', () => {
+      chart.src = button.dataset.chartSrc!;
+      chart.alt = button.dataset.chartAlt!;
+      choices.forEach(choice => choice.setAttribute('aria-pressed', String(choice === button)));
+      const caption = document.getElementById('chart-caption');
+      if (caption) caption.textContent = button.textContent;
+      const status = document.getElementById('chart-status');
+      if (status) status.textContent = `${button.textContent}의 예측 결과를 표시합니다.`;
+    }));
+  }
+</script>
